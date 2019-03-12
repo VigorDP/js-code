@@ -8,6 +8,12 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
+      "program": "${workspaceFolder}/src/big-data-add.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
       "program": "${workspaceFolder}/src/no-repeat-substring.js"
     }
   ]
