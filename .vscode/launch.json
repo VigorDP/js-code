@@ -8,25 +8,37 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/src/original/my-promise.js"
+      "program": "${workspaceFolder}/original/bind-new.js"
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/src/flat.js"
+      "program": "${workspaceFolder}/original/call-apply.js"
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/src/big-data-add.js"
+      "program": "${workspaceFolder}/original/my-promise.js"
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/src/no-repeat-substring.js"
+      "program": "${workspaceFolder}/algorithm/flat.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
+      "program": "${workspaceFolder}/algorithm/big-data-add.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
+      "program": "${workspaceFolder}/algorithm/no-repeat-substring.js"
     }
   ]
 }
