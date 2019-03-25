@@ -16,3 +16,6 @@
 ### 原生 JS 相关
 - [x] Promise 实现
 - [x] flat 实现
+- [x] bind-new 实现
+- [x] call-apply 实现
+- [x] throttle-debounce 实现
