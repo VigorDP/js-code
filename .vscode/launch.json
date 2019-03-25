@@ -8,6 +8,12 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
+      "program": "${workspaceFolder}/src/original/my-promise.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
       "program": "${workspaceFolder}/src/flat.js"
     },
     {
