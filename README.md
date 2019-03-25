@@ -1,4 +1,4 @@
-## JS-Algorithm
+## JS-Code
 
 学习常见算法
 
