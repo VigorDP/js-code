@@ -4,6 +4,12 @@
   // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
+  {
+    "type": "node",
+    "request": "launch",
+    "name": "Launch Program",
+    "program": "${workspaceFolder}/algorithm/sort.js"
+  },
     {
       "type": "node",
       "request": "launch",
@@ -26,19 +32,19 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/algorithm/flat.js"
+      "program": "${workspaceFolder}/leetcode/flat.js"
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/algorithm/big-data-add.js"
+      "program": "${workspaceFolder}/leetcode/big-data-add.js"
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/algorithm/no-repeat-substring.js"
+      "program": "${workspaceFolder}/leetcode/no-repeat-substring.js"
     }
   ]
 }
