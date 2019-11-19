@@ -3,7 +3,7 @@ const Resolved = 'resolved'
 const Rejected = 'rejected'
 
 class Promise {
-  static all (promiseArray) {
+  static all(promiseArray) {
     if (!Array.isArray(promiseArray)) {
       throw new Error('promiseArray must be an array')
     }
@@ -17,7 +17,7 @@ class Promise {
       }).catch(err => rej(err)))
     }).catch(err => console.log(err))
   }
-  static race (promiseArray) {
+  static race(promiseArray) {
     if (!Array.isArray(promiseArray)) {
       throw new Error('promiseArray must be an array')
     }
@@ -27,7 +27,7 @@ class Promise {
       }).catch(err => rej(err)))
     }).catch(err => console.log(err))
   }
-  constructor (fn) {
+  constructor(fn) {
     this.state = Pending
     this.value = null
     this.successCallback = []
@@ -40,7 +40,10 @@ class Promise {
       this._reject(error)
     }
   }
-  _resolve (data) {
+  _resolve(data) {
+    if (value instanceof Promise) {
+      return value.then(resolve, reject)
+    }
     if (this.state !== Resolved) { // 防止同一 promise 被 resolve 多次，如 race 的实现
       this.state = Resolved
       this.value = data
@@ -49,7 +52,7 @@ class Promise {
       }, 0)
     }
   }
-  _reject (reason) {
+  _reject(reason) {
     if (this.state !== Rejected) {
       this.state = Rejected
       this.value = reason
@@ -58,12 +61,18 @@ class Promise {
       }, 0)
     }
   }
-  then (success, fail) {
+  then(success, fail) {
     const resolveFn = typeof success === 'function' ? success : arg => arg
     const rejectFn = typeof fail === 'function' ? fail : () => {}
     if (this.state === Pending) {
       this.successCallback.push(resolveFn)
       this.failCallback.push(rejectFn)
+    }
+    if (this.state === Resolved) {
+      success(this.value)
+    }
+    if (this.state === Rejected) {
+      fail(this.value)
     }
     return this
   }
