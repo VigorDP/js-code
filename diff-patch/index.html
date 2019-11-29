@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>diff-patch demo</title>
+  <style>
+    .red {
+      color: red
+    }
+
+    .black {
+      color: black;
+    }
+  </style>
+  <script src="./element.js"></script>
+  <script src="./diff.js"></script>
+  <script src="./patch.js"></script>
+</head>
+
+<body>
+  <div id="app"></div>
+  <div id="diff"></div>
+  <button onclick="Mount()">挂载</button>
+  <button onclick="Diff()">diff</button>
+  <button onclick="Patch()">patch</button>
+  <pre>
+    <code>
+        // 1、初次渲染
+        var vdom1 = createVdom('h1', {
+          class: 'red'
+        }, [createVdom('p', {
+          class: 'red'
+        }, ['test']), createVdom('p', {
+          class: 'red',
+          style: 'color:green'
+        }, ['test2']), createVdom('p', {
+          class: 'red',
+          style: 'color:green',
+          onClick: function () {
+            console.log('clicked')
+          },
+          name: 'test'
+        }, ['test3'])])
+        const el = vdom2Element(vdom1)
+        mount(el, document.querySelector('#app'))
+    </code>
+  </pre>
+
+  <pre>
+    <code>
+    // 2、diff-patch
+    var vdom2 = createVdom('h1', {
+      class: 'black'
+    }, [createVdom('p', {}, ['testtest']), createVdom('p', {}, ['test2test2']), createVdom('p', {}, ['test2'])])
+    const patches = diff(vdom1, vdom2)
+    console.log('patches', patches)
+    patch(el, patches)
+    </code>
+  </pre>
+  <script>
+    // 1、初次渲染
+    var vdom1 = createVdom('h1', {
+      class: 'red'
+    }, [createVdom('p', {
+      class: 'red'
+    }, ['test']), createVdom('p', {
+      class: 'red',
+      style: 'color:green'
+    }, ['test2']), createVdom('p', {
+      class: 'red',
+      style: 'color:green',
+      onClick: function () {
+        console.log('clicked')
+      },
+      name: 'test'
+    }, ['test3'])])
+    // const el = vdom2Element(vdom1)
+    // mount(el, document.querySelector('#app'))
+    // 2、diff-patch
+    var vdom2 = createVdom('h1', {
+      class: 'black'
+    }, [createVdom('p', {}, ['testtest']), createVdom('p', {}, ['test2test2']), createVdom('p', {}, ['test2'])])
+    // const patches = diff(vdom1, vdom2)
+    // console.log('patches', patches)
+    // patch(el, patches)
+  </script>
+  <script>
+    var el, patches
+
+    function Mount() {
+      el = vdom2Element(vdom1)
+      mount(el, document.querySelector('#app'))
+    }
+
+    function Diff() {
+      patches = diff(vdom1, vdom2)
+      document.querySelector('#diff').innerHTML = JSON.stringify(patches, '', 4)
+    }
+
+    function Patch() {
+      patch(el, patches)
+    }
+  </script>
+</body>
+
+</html>
