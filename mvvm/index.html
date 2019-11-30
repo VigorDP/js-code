@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>MVVM 框架测试</title>
+  <script src="./obsever.js"></script>
+  <script src="./watcher.js"></script>
+  <script src="./compiler.js"></script>
+  <script src="./mvvm.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <input type="text" v-model="message">
+    <span v-on:click="handleClick">{{message}}</span>
+    <span>{{messages}}</span>
+  </div>
+
+  <script>
+    var vm = new MVVM({
+      el: '#app',
+      data: {
+        message: 'I am test message'
+      },
+      methods: {
+        handleClick: function () {
+          console.log('test')
+          debugger;
+          this.message = 'test'
+        }
+      },
+      computed: {
+        messages: function () {
+          return this.message + '!'
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
