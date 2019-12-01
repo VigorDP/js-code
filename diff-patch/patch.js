@@ -5,6 +5,7 @@ function patch(el, patches) {
 
 function traverse(el, index, patches) {
   var children = el.childNodes
+  // 先序深度优先
   children.forEach(child => {
     doPatch(child, index++, patches)
   })
@@ -12,7 +13,6 @@ function traverse(el, index, patches) {
 }
 
 function doPatch(el, index, patches) {
-  console.log('index', index)
   var patch = patches[index]
   patch.forEach(item => {
     if (item.type === 'REMOVE') {
