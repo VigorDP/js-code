@@ -45,9 +45,10 @@ Compiler.prototype = {
       });
     }
     var updateFn = updateUtil[type];
-    updateFn && updateFn(node, this.vm[exp]);
-    new Watcher(this.vm, exp, function () {
-      updateFn && updateFn(node, this.vm[exp]);
+    console.log('me.vm[exp]', me.vm[exp])
+    updateFn && updateFn(node, me.vm[exp]);
+    new Watcher(me.vm, exp, function () {
+      updateFn && updateFn(node, me.vm[exp]);
     });
   },
   event: function (eventType, exp, node) {

@@ -15,8 +15,9 @@
 <body>
   <div id="app">
     <input type="text" v-model="message">
-    <span v-on:click="handleClick">{{message}}</span>
+    <span>{{message}}</span>
     <span>{{messages}}</span>
+    <button v-on:click="handleClick">改变model</button>
   </div>
 
   <script>
@@ -27,14 +28,17 @@
       },
       methods: {
         handleClick: function () {
-          console.log('test')
-          debugger;
           this.message = 'test'
         }
       },
       computed: {
         messages: function () {
           return this.message + '!'
+        }
+      },
+      watch: {
+        message: function () {
+          console.log('watched!', this.message)
         }
       }
     })
