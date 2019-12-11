@@ -18,6 +18,7 @@
 - [x] bind-new 实现
 - [x] call-apply 实现
 - [x] throttle-debounce 实现
+- [x] deep-clone 实现
 
 ### diff-patch
 
