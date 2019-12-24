@@ -1,6 +1,6 @@
-const PENDING = 'pending';
-const FULFILLED = 'fulfilled';
-const REJECTED = 'rejected';
+const PENDING = "pending";
+const FULFILLED = "fulfilled";
+const REJECTED = "rejected";
 
 function MyPromise(executor) {
   let self = this;
@@ -45,26 +45,34 @@ MyPromise.prototype.resolvePromise = function (promise2, x, resolve, reject) {
   let called = false; // called 防止多次调用
 
   if (promise2 === x) {
-    return reject(new TypeError('循环引用'));
+    return reject(new TypeError("循环引用"));
   }
 
-  if (x !== null && (Object.prototype.toString.call(x) === '[object Object]' || Object.prototype.toString.call(x) === '[object Function]')) {
+  if (
+    x !== null &&
+    (Object.prototype.toString.call(x) === "[object Object]" ||
+      Object.prototype.toString.call(x) === "[object Function]")
+  ) {
     // x是对象或者函数
     try {
       let then = x.then;
 
-      if (typeof then === 'function') {
-        then.call(x, (y) => {
-          // 别人的Promise的then方法可能设置了getter等，使用called防止多次调用then方法
-          if (called) return;
-          called = true;
-          // 成功值y有可能还是promise或者是具有then方法等，再次resolvePromise，直到成功值为基本类型或者非thenable
-          self.resolvePromise(promise2, y, resolve, reject);
-        }, (reason) => {
-          if (called) return;
-          called = true;
-          reject(reason);
-        });
+      if (typeof then === "function") {
+        then.call(
+          x,
+          y => {
+            // 别人的Promise的then方法可能设置了getter等，使用called防止多次调用then方法
+            if (called) return;
+            called = true;
+            // 成功值y有可能还是promise或者是具有then方法等，再次resolvePromise，直到成功值为基本类型或者非thenable
+            self.resolvePromise(promise2, y, resolve, reject);
+          },
+          reason => {
+            if (called) return;
+            called = true;
+            reject(reason);
+          }
+        );
       } else {
         if (called) return;
         called = true;
@@ -82,12 +90,18 @@ MyPromise.prototype.resolvePromise = function (promise2, x, resolve, reject) {
 };
 
 MyPromise.prototype.then = function (onFuifilled, onRejected) {
-  onFuifilled = typeof onFuifilled === 'function' ? onFuifilled : value => {
-    return value;
-  };
-  onRejected = typeof onRejected === 'function' ? onRejected : reason => {
-    throw reason
-  };
+  onFuifilled =
+    typeof onFuifilled === "function" ?
+    onFuifilled :
+    value => {
+      return value;
+    };
+  onRejected =
+    typeof onRejected === "function" ?
+    onRejected :
+    reason => {
+      throw reason;
+    };
 
   let self = this;
   let promise2 = null;
@@ -147,17 +161,20 @@ MyPromise.prototype.catch = function (onRejected) {
 };
 
 MyPromise.prototype.finally = function (fn) {
-  return this.then((value) => {
-    fn();
-    return value;
-  }, (reason) => {
-    fn();
-    throw reason;
-  });
+  return this.then(
+    value => {
+      fn();
+      return value;
+    },
+    reason => {
+      fn();
+      throw reason;
+    }
+  );
 };
 
 MyPromise.prototype.done = function () {
-  this.catch((reason) => {
+  this.catch(reason => {
     // console.log('done', reason);
     throw reason;
   });
@@ -168,7 +185,7 @@ MyPromise.all = function (promiseArr) {
     let result = [];
 
     promiseArr.forEach((promise, index) => {
-      promise.then((value) => {
+      promise.then(value => {
         result[index] = value;
 
         if (result.length === promiseArr.length) {
@@ -182,7 +199,7 @@ MyPromise.all = function (promiseArr) {
 MyPromise.race = function (promiseArr) {
   return new MyPromise((resolve, reject) => {
     promiseArr.forEach(promise => {
-      promise.then((value) => {
+      promise.then(value => {
         resolve(value);
       }, reject);
     });
@@ -214,11 +231,27 @@ MyPromise.deferred = function () {
   return dfd;
 };
 
-module.exports = MyPromise;
-
-new Promise(function (resolve) {
-    resolve(42)
-  })
-  .then(function (value) {
-    alter(value)
-  })
+new MyPromise((resolve, reject) => {
+  console.log("外部promise");
+  resolve();
+}).then(() => {
+  console.log("外部第一个then");
+  new MyPromise((resolve, reject) => {
+    console.log("内部promise");
+    resolve();
+  }).then(() => {
+    console.log("内部第一个then");
+  }).then(() => {
+    console.log("内部第二个then");
+  });
+  return new MyPromise((resolve, reject) => {
+    console.log("内部promise2");
+    resolve();
+  }).then(() => {
+    console.log("内部第一个then2");
+  }).then(() => {
+    console.log("内部第二个then2");
+  });
+}).then(() => {
+  console.log("外部第二个then");
+});
