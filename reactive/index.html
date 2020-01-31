@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vue3响应式原理</title>
+  <script src="./utils.js"></script>
+  <script src="./reactive.js"></script>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script>
+    const button = document.querySelector('#app')
+    const obj = {
+      name: '风之化身',
+      age: 28,
+      meta: {
+        title: '高级工程师'
+      }
+    }
+    const proxy = reactive(obj)
+    const computedObj = computed(() => proxy.age * 2)
+
+    effect(() => {
+      button.innerHTML = `${proxy.name} ${proxy.age} ${proxy.meta.title} ${computedObj.value}`
+    })
+
+    button.onclick = function () {
+      proxy.age += 1
+    }
+  </script>
+</body>
+
+</html>
