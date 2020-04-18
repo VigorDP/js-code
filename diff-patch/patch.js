@@ -1,19 +1,24 @@
 function patch(el, patches) {
-  var index = 0;
-  traverse(el, index, patches)
+  var obj = {
+    index: 0
+  }
+  traverse(el, obj, patches)
 }
 
-function traverse(el, index, patches) {
+function traverse(el, obj, patches) {
   var children = el.childNodes
-  // 先序深度优先
-  children.forEach(child => {
-    doPatch(child, index++, patches)
-  })
-  doPatch(el, index, patches)
+  if (children.length === 0) {
+    doPatch(el, obj, patches)
+  } else {
+    children.forEach(child => {
+      traverse(child, obj, patches)
+    })
+    doPatch(el, obj, patches)
+  }
 }
 
-function doPatch(el, index, patches) {
-  var patch = patches[index]
+function doPatch(el, obj, patches) {
+  var patch = patches[obj.index]
   patch.forEach(item => {
     if (item.type === 'REMOVE') {
       el.parentNode.removeChild(el)
@@ -24,4 +29,5 @@ function doPatch(el, index, patches) {
       setAttributes(el, item.value)
     }
   })
+  obj.index++
 }

@@ -19,6 +19,9 @@ function vdom2Element(vdom) {
 }
 
 function setAttributes(dom, attrs) {
+  if (dom.nodeType === 3) { // 文本节点直接返回
+    return
+  }
   Object.keys(attrs).forEach(key => {
     var value = attrs[key]
     // 事件
@@ -26,7 +29,8 @@ function setAttributes(dom, attrs) {
       dom.addEventListener(key.slice(2).toLowerCase(), value, false)
     } else if (key === 'class') {
       // 类名
-      dom.classList.add(value)
+      dom.removeAttribute('class')
+      value && dom.classList.add(value)
     } else if (key === 'style') {
       // 样式
       dom.style.cssText = value

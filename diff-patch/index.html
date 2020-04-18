@@ -82,7 +82,9 @@
     // 2、diff-patch
     var vdom2 = createVdom('h1', {
       class: 'black'
-    }, [createVdom('p', {}, ['testtest']), createVdom('p', {}, ['test2test2']), createVdom('p', {}, ['test2'])])
+    }, [createVdom('p', {}, ['testtest']), createVdom('p', {}, ['test2test2']), createVdom('p', {}, [
+      'test3test3'
+    ])])
     // const patches = diff(vdom1, vdom2)
     // console.log('patches', patches)
     // patch(el, patches)
@@ -98,6 +100,7 @@
     function Diff() {
       patches = diff(vdom1, vdom2)
       document.querySelector('#diff').innerHTML = JSON.stringify(patches, '', 4)
+      console.dir(patches)
     }
 
     function Patch() {

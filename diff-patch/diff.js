@@ -5,12 +5,14 @@
 // 对比新旧vdom
 function diff(old, fresh) {
   var patches = {}
-  var index = 0
-  walk(old, fresh, index, patches)
+  var obj = {
+    index: 0
+  }
+  walk(old, fresh, obj, patches)
   return patches
 }
 
-function walk(old, fresh, index, patches) {
+function walk(old, fresh, obj, patches) {
   var muteArray = []
   // 新节点不存在
   if (!fresh) {
@@ -32,7 +34,7 @@ function walk(old, fresh, index, patches) {
         value: fresh
       })
     } else {
-      // 老节点是tag节点
+      // 老节点是tag节点(这里简化处理，只考虑相同tag)
       // 比较属性
       var attrs = diffAttr(old.attrs, fresh.attrs)
       muteArray.push({
@@ -41,13 +43,14 @@ function walk(old, fresh, index, patches) {
       })
       // 比较子节点
       old.children.forEach((child, key) => {
-        walk(child, fresh.children[key], index++, patches)
+        walk(child, fresh.children[key], obj, patches)
+        obj.index++;
       })
     }
   }
   // 记录当前节点的变化
   if (muteArray.length >= 1) {
-    patches[index] = muteArray
+    patches[obj.index] = muteArray
   }
 }
 
