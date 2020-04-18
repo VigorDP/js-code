@@ -1,5 +1,5 @@
 const handlers = {
-  get(target, name, receiver) {
+  get(target, name, receiver) { //如果name是一个 get 属性，则get函数的this会被绑定为receiver对象
     const result = Reflect.get(target, name, receiver)
     track(target, name);
     return isObj(result) ? reactive(result) : result
@@ -22,6 +22,7 @@ function track(target, name) {
     effectSet = new Set()
     target2.set(name, effectSet)
   }
+  // 等待 get 触发后，从 effectStack 取出 effect
   const fn = effectStack[effectStack.length - 1]
   fn && effectSet.add(fn)
 }
@@ -37,6 +38,7 @@ function reactive(target) {
   if (proxyObj) {
     return proxyObj
   }
+  // 如果 target 本身已经是 reactive 的
   if (reactiveToRaw.get(target)) {
     return target
   }

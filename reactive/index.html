@@ -22,14 +22,16 @@
       }
     }
     const proxy = reactive(obj)
-    const computedObj = computed(() => proxy.age * 2)
+    const computedObj = computed(() => proxy.age * 2) // 返回一个带value属性的对象
 
     effect(() => {
       button.innerHTML = `${proxy.name} ${proxy.age} ${proxy.meta.title} ${computedObj.value}`
     })
+    console.log(targetMap)
 
     button.onclick = function () {
       proxy.age += 1
+      proxy.meta.title = '资深工程师'
     }
   </script>
 </body>
